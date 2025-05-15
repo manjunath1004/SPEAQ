@@ -5,7 +5,17 @@ export default {
     "./public/index.html",        // CRA uses this
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'fade-out': 'fadeOut 2s ease-out', // Fade-out animation
+      },
+      keyframes: {
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+      },
+    },
   },
   plugins: [],
 };

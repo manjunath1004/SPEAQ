@@ -1,33 +1,25 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/supabase";
 
-// ✅ Create AuthContext
 const AuthContext = createContext();
 
-// ✅ AuthProvider Component
-export function AuthProvider({ children }) {
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false); // State for handling logout animation
 
   useEffect(() => {
     const fetchUser = async () => {
-      setLoading(true);
-
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Error fetching session:", error.message);
-        setUser(null);
-      } else {
-        setUser(data?.session?.user || null);
-      }
-
-      setLoading(false);
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
     };
 
     fetchUser();
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("Auth State Changed:", session);
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
     });
 
@@ -36,50 +28,53 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  // ✅ Sign in with Email & Password
   const signIn = async (email, password) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return error.message;
-    return null;
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+    } catch (error) {
+      return error.message;
+    }
   };
 
-  // ✅ Sign in with Google
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options: { queryParams: { prompt: "select_account" } },
     });
-    if (error) console.error("Google Sign-In Error:", error.message);
+    if (error) {
+      return error.message;
+    }
   };
 
-  // ✅ Sign in with GitHub
   const signInWithGitHub = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
     });
-    if (error) console.error("GitHub Sign-In Error:", error.message);
+    if (error) {
+      return error.message;
+    }
   };
 
-  // ✅ Forgot Password (Reset)
   const resetPassword = async (email) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email);
-    if (error) return error.message;
-    return null;
+    const { error } = await supabase.auth.api.resetPasswordForEmail(email);
+    if (error) {
+      throw error.message;
+    }
   };
 
-  // ✅ Sign out
   const signOut = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
+    setLoggingOut(true);
+    setTimeout(async () => {
+      await supabase.auth.signOut();
+      setUser(null);
+      setLoggingOut(false); // Reset the animation state after 2 seconds
+    }, 2000); // Delay logout for 2 seconds to show animation
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signInWithGoogle, signInWithGitHub, resetPassword, signOut, loading }}>
+    <AuthContext.Provider value={{ user, signIn, signInWithGoogle, signInWithGitHub, resetPassword, signOut, loggingOut }}>
       {children}
     </AuthContext.Provider>
   );
-}
-
-// ✅ Custom Hook
-export function useAuth() {
-  return useContext(AuthContext);
-}
+};

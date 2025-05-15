@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
 import Navbar from "./components/Navbar";
+import Footer from './components/Footer'; 
 import SignInPopup from "./components/SignInPopup";
 import SignUpPopup from "./components/SignUpPopup";
 import Dashboard from "./pages/Dashboard";
@@ -10,7 +11,6 @@ import IntroPage from "./pages/IntroPage";
 import Contact from "./components/Contact";
 import FAQs from "./components/FAQs";
 import About from "./components/About";
-import AptitudeTest from "./Aptitude/AptitudeTest";
 import TandP from "./components/TandP";
 import Support from "./components/Support";
 import Careers from "./components/Careers";
@@ -23,15 +23,12 @@ import CSS from "./Courses/Frontend/CSS.jsx";
 import JAVASCRIPT from "./Courses/Frontend/JAVASCRIPT.jsx";
 import Java from "./Courses/Backend/Java.jsx";
 import Terminal from "./Courses/Terminal";
-import Basic from "./Aptitude/Basic.jsx";
-import Intermediate from "./Aptitude/Intermediate";
-import Advance from "./Aptitude/Advance";
-import Footer from "./components/Footer";
-import AptitudeHome from "./Aptitude/AptitudeHome"; // New component for level selection
-import AptitudeTestPage from "./Aptitude/AptitudeTestPage"; // New component for the actual test
-import TechnicalInterview from "./TechnicalInterview/page.jsx"; // Assuming this is the correct path for the Technical Interview component
+import AptitudeHome from "./Aptitude/AptitudeHome";
+import AptitudeTestPage from "./Aptitude/AptitudeTestPage";
+import TechnicalInterview from "./TechnicalInterview/page.jsx";
 import ContactUs from "./components/ContactUs";
 import HrInterviewPage from "./HrInterview/page.jsx";
+
 
 export default function App() {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -58,22 +55,15 @@ export default function App() {
     };
   }, []);
 
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
-  }
+  if (loading) return <div className="flex items-center justify-center h-screen">Loading...</div>;
 
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Navbar 
-          setShowSignIn={setShowSignIn} 
-          setShowSignUp={setShowSignUp}
-          triggerResumeUpload={() => resumeUploadRef.current?.()} 
-        />
+        <Navbar setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp} triggerResumeUpload={() => resumeUploadRef.current?.()} />
 
         <div className="flex-grow flex flex-col">
           <Routes>
-            /* Public Routes */
             <Route path="/" element={<IntroPage setShowSignIn={setShowSignIn} />} />
             <Route path="/ContactUs" element={<ContactUs />} />
             <Route path="/Contact" element={<Contact />} />
@@ -83,7 +73,8 @@ export default function App() {
             <Route path="/Careers" element={<Careers />} />
             <Route path="/Support" element={<Support />} />
             <Route path="/Mockinterview" element={<Mockinterview />} />
-            <Route path="/Certificate" element={<Certificate />} />
+            <Route path="/Certificate" element={user ? <Certificate /> : <Navigate to="/" />} />
+
             <Route path="/LearningCourses" element={<LearningCourses />} />
             <Route path="/Frontend" element={<Frontend />} />
             <Route path="/HTML" element={<HTML />} />
@@ -91,39 +82,20 @@ export default function App() {
             <Route path="/JAVASCRIPT" element={<JAVASCRIPT />} />
             <Route path="/Java" element={<Java />} />
             <Route path="/Terminal" element={<Terminal />} />
-            
-            /* Updated Aptitude Test Routes */
             <Route path="/aptitude-test" element={<AptitudeHome />} />
             <Route path="/aptitude-test/:level" element={<AptitudeTestPage />} />
-            
-            /* Legacy routes (keep for backward compatibility if needed) */
-            <Route path="/AptitudeTest" element={<Navigate to="/aptitude-test" replace />} />
-            <Route path="/Basic" element={<Navigate to="/aptitude-test/Basic" replace />} />
-            <Route path="/Intermediate" element={<Navigate to="/aptitude-test/intermediate" replace />} />
-            <Route path="/Advance" element={<Navigate to="/aptitude-test/advanced" replace />} />
-            <Route path="/TechnicalInterview" element={<TechnicalInterview />} />        
+            <Route path="/TechnicalInterview" element={<TechnicalInterview />} />
             <Route path="/HrInterview" element={<HrInterviewPage />} />
-            /* Protected Routes */
-            <Route 
-              path="/dashboard" 
-              element={user ? <Dashboard /> : <Navigate to="/" />} 
-            />
-            <Route 
-              path="/upload" 
-              element={user ? <ResumeUpload resumeUploadRef={resumeUploadRef} /> : <Navigate to="/" />} 
-            />
+            <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+            <Route path="/upload" element={user ? <ResumeUpload resumeUploadRef={resumeUploadRef} /> : <Navigate to="/" />} />
           </Routes>
         </div>
 
         <Footer />
 
-        {showSignIn && (
-          <SignInPopup setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp} />
-        )}
-        {showSignUp && (
-          <SignUpPopup setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp} />
-        )}
+        {showSignIn && <SignInPopup setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp} />}
+        {showSignUp && <SignUpPopup setShowSignIn={setShowSignIn} setShowSignUp={setShowSignUp} />}
       </div>
     </Router>
   );
-};
+}

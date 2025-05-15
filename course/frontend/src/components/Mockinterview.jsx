@@ -29,7 +29,7 @@ const MockInterview = () => {
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
           onClick={() => navigate("/AptitudeTest")} // Navigate to Aptitude Test
         >
-          <img src="/AptitudeIcon.jpg" alt="Aptitude Test" className="w-12 h-12" />
+          <img src="/aptitude.png" alt="Aptitude Test" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4"> Aptitude Test</h2>
           <p className="text-gray-600 mt-2">
             Sharpen your problem-solving skills with aptitude tests
@@ -41,7 +41,7 @@ const MockInterview = () => {
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
           onClick={() => navigate("/TechnicalInterview")} // Navigate to Technical Interview
         >
-          <img src="/TechnicalIcon.jpg" alt="Technical Interview" className="w-12 h-12" />
+          <img src="technicalcoding.png" alt="Technical Interview" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4">Technical Interview</h2>
           <p className="text-gray-600 mt-2">
             Practice coding and technical problem-solving questions
@@ -53,7 +53,7 @@ const MockInterview = () => {
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
           onClick={() => navigate("/HRInterview")} // Navigate to HR Interview
         >
-          <img src="/HRIcon.jpg" alt="HR Interview" className="w-12 h-12" />
+          <img src="hrinterview.png" alt="HR Interview" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4">HR Interview</h2>
           <p className="text-gray-600 mt-2">
             Learn how to answer behavioral and situational questions

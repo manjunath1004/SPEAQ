@@ -3,13 +3,14 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
-  const { signIn, signInWithGoogle, signInWithGitHub, resetPassword } = useAuth();
+  const { signOut, signIn, signInWithGoogle, signInWithGitHub, resetPassword } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [resetMode, setResetMode] = useState(false);
+  const [logoutAnimation, setLogoutAnimation] = useState(false);
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
@@ -47,6 +48,14 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
     setLoading(false);
   };
 
+  const handleLogout = () => {
+    setLogoutAnimation(true);
+    setTimeout(() => {
+      signOut();
+      navigate("/"); // Redirect to homepage after logout
+    }, 2000); // Matches animation duration
+  };
+
   const handleGoogleSignIn = async () => {
     setLoading(true);
     setError("");
@@ -64,7 +73,7 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+    <div className={`fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 ${logoutAnimation ? "fade-out" : ""}`}>
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
         <button
           onClick={() => setShowSignIn(false)}
@@ -103,19 +112,16 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
                 required
               />
             </div>
-            
           )}
           <p className=" mb-2 text-center">
-          {resetMode ? (
-            <span
-              onClick={() => setResetMode(false)}
-              className="text-blue-600 cursor-pointer "
-            >
-              Back to Sign In
-            </span>
-          ) : (
-            <>
-              Forgot password?{" "}
+            {resetMode ? (
+              <span
+                onClick={() => setResetMode(false)}
+                className="text-blue-600 cursor-pointer "
+              >
+                Back to Sign In
+              </span>
+            ) : (
               <span
                 onClick={() => {
                   setResetMode(true);
@@ -124,11 +130,10 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
                 }}
                 className="text-blue-600 cursor-pointer hover:underline"
               >
-                Reset here
+                Forgot password? Reset here
               </span>
-            </>
-          )}
-        </p>
+            )}
+          </p>
 
           <button
             type="submit"
@@ -156,8 +161,6 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
           </div>
         )}
 
-        
-
         <p className="mt-2 text-center">
           Don't have an account?{" "}
           <span
@@ -170,6 +173,13 @@ const SignInPopup = ({ setShowSignIn, setShowSignUp }) => {
             Sign up here
           </span>
         </p>
+
+        <button
+          onClick={handleLogout}
+          className="w-full mt-4 bg-gray-500 text-white px-4 py-2 rounded-lg"
+        >
+          Log out
+        </button>
       </div>
     </div>
   );
