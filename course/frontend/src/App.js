@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { supabase } from "./lib/supabase";
+// import ComponentName from './ComponentPath';
 import Navbar from "./components/Navbar";
 import Footer from './components/Footer'; 
 import SignInPopup from "./components/SignInPopup";
@@ -25,6 +26,7 @@ import Java from "./Courses/Backend/Java.jsx";
 import Terminal from "./Courses/Terminal";
 import AptitudeHome from "./Aptitude/AptitudeHome";
 import AptitudeTestPage from "./Aptitude/AptitudeTestPage";
+import AptitudeTest from "./Aptitude/AptitudeTest";
 import TechnicalInterview from "./TechnicalInterview/page.jsx";
 import ContactUs from "./components/ContactUs";
 import HrInterviewPage from "./HrInterview/page.jsx";
@@ -84,6 +86,7 @@ export default function App() {
             <Route path="/Terminal" element={<Terminal />} />
             <Route path="/aptitude-test" element={<AptitudeHome />} />
             <Route path="/aptitude-test/:level" element={<AptitudeTestPage />} />
+            <Route path="/aptitude-test/:level" element={<AptitudeTest />} />
             <Route path="/TechnicalInterview" element={<TechnicalInterview />} />
             <Route path="/HrInterview" element={<HrInterviewPage />} />
             <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />

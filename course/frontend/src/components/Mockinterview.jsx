@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-// import {AptitudeTest} from '../Aptitude/AptitudeTest';
+import AptitudeTest from '../Aptitude/AptitudeTest'; // Import AptitudeTest component
 
 
 const MockInterview = () => {
@@ -27,7 +27,7 @@ const MockInterview = () => {
         {/* Aptitude Test Card */}
         <div 
           className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-center text-center hover:bg-slate-100 relative group cursor-pointer"
-          onClick={() => navigate("/AptitudeTest")} // Navigate to Aptitude Test
+          onClick={() => navigate("/aptitude-test")} // Navigate to Aptitude Test
         >
           <img src="/aptitude.png" alt="Aptitude Test" className="w-12 h-12" />
           <h2 className="text-lg font-semibold mt-4"> Aptitude Test</h2>
