@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import questionRoutes from './routes/questions.js';
+import leetcodeRoute from "./routes/leetcodeRoute.js";
+
 
 // Configuration
 dotenv.config();
@@ -11,6 +13,12 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+
+
+// Somewhere before or after other routes
+app.use("/api", leetcodeRoute);
+
 
 // Enhanced Database Connection
 const connectDB = async () => {
