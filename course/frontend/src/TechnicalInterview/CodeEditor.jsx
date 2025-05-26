@@ -153,8 +153,8 @@ export default function App() {
     setRunning(true);
     setOutput("Running code...");
 
-    const source_code = code;
-    const language_id = languageId;
+    // const source_code = code;
+    // const language_id = languageId;
 
     try {
       const response = await fetch(

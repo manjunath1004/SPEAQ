@@ -34,7 +34,7 @@ const FrontendCertificate = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-10 px-4 bg-gradient-to-tr from-gray-100 to-gray-300 min-h-screen">
+    <div className="flex flex-col items-center justify-center mt-10 py-10 px-4 bg-gradient-to-tr from-gray-100 to-gray-300 min-h-screen">
       {!certificateVisible && (
         <div className="text-center bg-white p-6 rounded-xl shadow-md mb-8 w-full max-w-xl border border-blue-200">
           <h2 className="text-2xl font-bold text-blue-800 mb-4">🖊️ Enter Your Name</h2>

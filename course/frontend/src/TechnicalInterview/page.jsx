@@ -1,8 +1,6 @@
-
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import CodeEditor from "./CodeEditor";
-
 
 const Page = () => {
   const navigate = useNavigate();
@@ -18,7 +16,7 @@ const Page = () => {
     setLoading(true);
     setError("");
     try {
-      // 1. Try external API
+      // Try external API
       const res = await fetch(`/api/questions?topic=${selectedTopic}&level=${selectedLevel}`);
       if (!res.ok) throw new Error("External API failed");
       const data = await res.json();
@@ -26,7 +24,7 @@ const Page = () => {
       if (!data.questions || data.questions.length === 0) throw new Error("Empty from API");
       setQuestions(data.questions);
     } catch (err) {
-      // 2. Fallback to MongoDB
+      // Fallback to MongoDB
       try {
         const resMongo = await fetch(`/api/mongo-questions?topic=${selectedTopic}&level=${selectedLevel}`);
         if (!resMongo.ok) throw new Error("MongoDB fetch failed");
@@ -48,12 +46,15 @@ const Page = () => {
     }
   };
 
-  const handleStart = () => {
+  const handleStart = async () => {
     if (!selectedTopic || !selectedLevel) {
       alert("Please select both topic and level.");
       return;
     }
-    fetchQuestions();
+    await fetchQuestions();
+    if (!error) {
+      navigate("/CodeEditor");
+    }
   };
 
   return (
@@ -93,7 +94,7 @@ const Page = () => {
 
           <button
             className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded"
-            onClick= {() => navigate("/CodeEditor")} 
+            onClick={handleStart}
             disabled={loading}
           >
             {loading ? "Loading..." : "🚀 Start Interview"}

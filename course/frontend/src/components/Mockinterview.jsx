@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import AptitudeTest from '../Aptitude/AptitudeTest'; // Import AptitudeTest component
+// import AptitudeTest from '../Aptitude/AptitudeTest'; // Import AptitudeTest component
 
 
 const MockInterview = () => {

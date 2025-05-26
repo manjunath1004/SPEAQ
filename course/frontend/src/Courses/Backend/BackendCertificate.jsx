@@ -31,7 +31,7 @@ const BackendCertificate = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-tr from-gray-100 to-gray-300 p-6">
+    <div className="flex flex-col items-center justify-center mt-10 min-h-screen bg-gradient-to-tr from-gray-100 to-gray-300 p-6">
 
       {/* STEP 1: Name Input Page */}
       {step === "input" && (
